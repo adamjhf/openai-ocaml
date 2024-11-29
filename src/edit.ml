@@ -10,10 +10,10 @@ let send
   ?top_p
   ()
   =
-  let input = Json.to_field_opt "input" yojson_of_string input in
-  let n = Json.to_field_opt "n" yojson_of_int n in
-  let temperature = Json.to_field_opt "temperature" yojson_of_float temperature in
-  let top_p = Json.to_field_opt "top_p" yojson_of_float top_p in
+  let input = Json.to_field_opt "input" (fun s -> `String s) input in
+  let n = Json.to_field_opt "n" (fun i -> `Int i) n in
+  let temperature = Json.to_field_opt "temperature" (fun f -> `Float f) temperature in
+  let top_p = Json.to_field_opt "top_p" (fun f -> `Float f) top_p in
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)

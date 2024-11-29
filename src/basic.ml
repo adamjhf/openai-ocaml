@@ -54,7 +54,7 @@ module Audio = struct
   ;;
 
   let yojson_of_response_format format =
-    format |> string_of_response_format |> yojson_of_string
+    format |> string_of_response_format |> fun s -> `String s
   ;;
 
   let json_to_response format j =

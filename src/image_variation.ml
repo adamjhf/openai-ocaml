@@ -13,16 +13,16 @@ let send_raw
   ()
   =
   let%lwt image = Basic.read_file image in
-  let n = Json.to_field_opt "n" yojson_of_int n in
-  let user = Json.to_field_opt "top_p" yojson_of_string user in
+  let n = Json.to_field_opt "n" (fun i -> `Int i) n in
+  let user = Json.to_field_opt "top_p" (fun s -> `String s) user in
   let response_format' =
-    response_format |> string_of_response_format |> yojson_of_string
+    response_format |> string_of_response_format |> fun s -> `String s
   in
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)
       [ "image", `String image
-      ; "size", size |> string_of_size |> yojson_of_string
+      ; "size", size |> string_of_size |> (fun s -> `String s)
       ; "response_format", response_format'
       ; user
       ; n

@@ -13,15 +13,15 @@ let send
   ()
   =
   let%lwt file = Basic.read_file file in
-  let prompt = Json.to_field_opt "prompt" yojson_of_string prompt in
-  let temperature = Json.to_field_opt "temperature" yojson_of_float temperature in
-  let language = Json.to_field_opt "language" yojson_of_string language in
+  let prompt = Json.to_field_opt "prompt" (fun s -> `String s) prompt in
+  let temperature = Json.to_field_opt "temperature" (fun f -> `Float f) temperature in
+  let language = Json.to_field_opt "language" (fun s -> `String s) language in
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)
       [ "file", `String file
       ; "model", `String model
-      ; "response_format", yojson_of_response_format response_format
+      ; "response_format", (fun f -> `String (string_of_response_format f)) response_format
       ; prompt
       ; temperature
       ; language

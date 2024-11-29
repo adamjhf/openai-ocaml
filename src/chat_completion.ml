@@ -1,3 +1,5 @@
+open Ppx_yojson_conv_lib.Yojson_conv.Primitives
+
 let endpoint = "/v1/chat/completions"
 
 type role =
@@ -38,20 +40,20 @@ let send_raw_k
   ?user
   ()
   =
-  let temperature = Json.to_field_opt "temperature" yojson_of_float temperature in
-  let top_p = Json.to_field_opt "top_p" yojson_of_float top_p in
-  let n = Json.to_field_opt "n" yojson_of_int n in
-  let stream = Json.to_field_opt "stream" yojson_of_bool stream in
-  let stop = Json.to_field_opt "stop" (yojson_of_list Fun.id) stop in
-  let max_tokens = Json.to_field_opt "max_tokens" yojson_of_int max_tokens in
+  let temperature = Json.to_field_opt "temperature" (fun f -> `Float f) temperature in
+  let top_p = Json.to_field_opt "top_p" (fun f -> `Float f) top_p in
+  let n = Json.to_field_opt "n" (fun i -> `Int i) n in
+  let stream = Json.to_field_opt "stream" (fun b -> `Bool b) stream in
+  let stop = Json.to_field_opt "stop" (fun l -> `List l) stop in
+  let max_tokens = Json.to_field_opt "max_tokens" (fun i -> `Int i) max_tokens in
   let presence_penalty =
-    Json.to_field_opt "presence_penalty" yojson_of_float presence_penalty
+    Json.to_field_opt "presence_penalty" (fun f -> `Float f) presence_penalty
   in
   let frequency_penalty =
-    Json.to_field_opt "frequency_penalty" yojson_of_float frequency_penalty
+    Json.to_field_opt "frequency_penalty" (fun f -> `Float f) frequency_penalty
   in
   let logit_bias = Json.to_field_opt "logit_bias" (fun x -> `Assoc x) logit_bias in
-  let user = Json.to_field_opt "user" yojson_of_string user in
+  let user = Json.to_field_opt "user" (fun s -> `String s) user in
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)
