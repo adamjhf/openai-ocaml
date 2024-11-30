@@ -1,4 +1,4 @@
-let endpoint = "/v1/audio/transcriptions"
+let endpoint = "/audio/transcriptions"
 
 open Basic.Audio
 

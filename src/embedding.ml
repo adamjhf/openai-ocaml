@@ -1,4 +1,4 @@
-let endpoint = "/v1/embeddings"
+let endpoint = "/embeddings"
 
 let send (client : Client.t) ?(model = client.model) ~input ?user () =
   let user = Json.to_field_opt "user" (fun x -> `String x) user in

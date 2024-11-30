@@ -1,4 +1,4 @@
-let endpoint = "/v1/completions"
+let endpoint = "/completions"
 
 let send
   (client : Client.t)

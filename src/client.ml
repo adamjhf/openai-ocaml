@@ -6,7 +6,7 @@ type t =
   }
 
 let create  api_key=
-  let base_url = "https://api.openai.com" in
+  let base_url = "https://api.openai.com/v1" in
   {
     api_key
   ; url = base_url

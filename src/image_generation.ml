@@ -1,4 +1,4 @@
-let endpoint = "/v1/images/generations"
+let endpoint = "/images/generations"
 
 open Basic.Images
 
