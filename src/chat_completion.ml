@@ -86,9 +86,7 @@ let send_raw_k
   in
   let logit_bias = Json.to_field_opt "logit_bias" (fun x -> `Assoc x) logit_bias in
   let user = Json.to_field_opt "user" (fun s -> `String s) user in
-  let tools =
-    Json.to_field_opt "tools" (fun l -> `List (List.map (fun x -> `String x) l)) tools
-  in
+  let tools = Json.to_field_opt "tools" (fun l -> `List l) tools in
   let tool_choice = Json.to_field_opt "tool_choice" (fun s -> `String s) tool_choice in
   let body =
     List.filter
@@ -125,21 +123,6 @@ let send_raw_k
       ()
   in
   k resp
-;;
-
-let extract_content body =
-  let json = Yojson.Safe.from_string body in
-  Json.(
-    member "choices" json
-    |> function
-    | [%yojson? [ res ]] ->
-      res
-      |> member "message"
-      |> member "content"
-      |> to_string
-      |> String.trim
-      |> Lwt.return
-    | _ -> Lwt.fail_with @@ Printf.sprintf "Unexpected response: %s" body)
 ;;
 
 let parse_completion_response body =
